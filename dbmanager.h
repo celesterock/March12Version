@@ -5,61 +5,87 @@
 #include <QtSql>
 #include <vector>
 #include "college.h"
-// #include <adminDialog.h>
 
+/**
+ * @brief The DistanceData struct represents the data structure to hold information about distances between colleges.
+ */
 struct DistanceData {
-    QString startCollege;
-    QString endCollege;
-    double  distance;
+    QString startCollege; ///< The name of the starting college.
+    QString endCollege;   ///< The name of the ending college.
+    double distance;      ///< The distance between the starting and ending colleges.
 };
 
-/* DbManager class is used to read in data from the SQLite database
- *   and store the information in the appropriate structures
- * */
+/**
+ * @brief The DbManager class is responsible for managing interactions with the SQLite database.
+ */
 class DbManager
 {
 public:
-    QVector <DistanceData> DistanceVec; // Holds the start college obj, end college obj, and dist btw
-    QVector <College> CollegeVec;       // A vector of College objects
+    QVector<DistanceData> DistanceVec; ///< A vector holding distance data between colleges.
+    QVector<College> CollegeVec;       ///< A vector of College objects representing colleges.
 
-    DbManager(const QString& path);     // Constructor; takes in path to the SQLite database
+    /**
+     * @brief Constructor for the DbManager class.
+     * @param path The path to the SQLite database.
+     */
+    DbManager(const QString& path);
+
+    /**
+     * @brief Destructor for the DbManager class.
+     */
     ~DbManager();
 
-    // Checks that the SQLite database was successfully opened
+    /**
+     * @brief Checks if the SQLite database is open.
+     * @return True if the database is open, false otherwise.
+     */
     bool isOpen() const;
 
-    // adds colleges/distances from a new SQLite table
+    /**
+     * @brief Adds colleges and distances from a new SQLite table.
+     */
     void addColleges();
 
     /* REMOVE */
+    /**
+     * @brief Prints all colleges in the database.
+     */
     void printAllColleges() const;
 
-    // returns the vector of college objects
+    /**
+     * @brief Retrieves the vector of college objects.
+     * @return A const reference to the vector of college objects.
+     */
     const QVector<College>& getCollegeVec() const;
 
-    // Methods added from Daniel
-    QVector <College> specialColleges;
+    QVector<College> specialColleges; ///< A vector holding special colleges.
     void addSouvenirs(const College&);
+    /**
+     * @brief Retrieves the vector of available colleges.
+     * @return A const reference to the vector of available colleges.
+     */
     const QVector<College>& getAvailableColleges() const;
 
 private:
-    QSqlDatabase m_db;
-    QSet<QString> uniqueColleges; // Keeps track of unique college names
+    QSqlDatabase m_db;         ///< The SQLite database object.
+    QSet<QString> uniqueColleges; ///< Set to store unique college names.
 
-    /* Creates a vector of starting college, ending college, and distance between
-     * for every college in the file */
+    /**
+     * @brief Populates the DistanceVec vector with data about distances between colleges.
+     */
     void populateDistanceVec();
 
-    // Adds every unique college (as a College object) to the CollegeVec
+    /**
+     * @brief Populates the CollegeVec vector with college objects.
+     */
     void populateCollegeVec();
 
-    /* Reads in the souvenir file and adds the souvenirs/prices to the
-     * appropriate college object */
+    /**
+     * @brief Reads souvenirs from a file and adds them to the appropriate college object.
+     */
     void readInSouvenirs();
 
-    // Added from Daniel
-    QString collegeName;
-
+    QString collegeName; ///< The name of the college.
 };
 
 #endif // DBMANAGER_H
