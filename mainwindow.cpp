@@ -1,35 +1,41 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "admin.h" // Include the Admin header
 
 MainWindow::MainWindow(DbManager* dbManager, QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    dbManager(dbManager)
+    dbManager(dbManager),
+    adminWindow(nullptr) // Initialize the adminWindow pointer
 {
     ui->setupUi(this);
 
     newAdminDialog = new adminDialog(dbManager, this);
+    adminWindow = new Admin(this); // Initialize the Admin window here
     createActions();
     createMenus();
 
+    // Connect the openAdminButton click signal to the appropriate slot (assuming the button is named openAdminButton)
+    connect(ui->openAdminButton, &QPushButton::clicked, this, &MainWindow::openAdminWindow);
+
     // Begin Trip opens the TripPlanner.ui window
     connect(ui->beginTrip, &QPushButton::clicked, this, &MainWindow::beginTrip);
-
-
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete adminWindow; // Ensure we delete the adminWindow to avoid memory leaks
+    delete newAdminDialog;
 }
 
 void MainWindow::createActions()
 {
-    toLoginAct = new QAction("&Login",this);
+    toLoginAct = new QAction("&Login", this);
     connect(toLoginAct, &QAction::triggered, this, &MainWindow::toLogin);
     qDebug() << "hello";
-
 }
+
 void MainWindow::createMenus()
 {
     administrativeAccess = menuBar()->addMenu("Admin");
@@ -42,33 +48,25 @@ void MainWindow::toLogin()
     newAdminDialog->show();
 }
 
-/* *************************************************************************
- * Creates a new trip instance and allows the user to make purchases at
- *  every college included in the trip. For now, I have hardcoded 3 colleges.
- * *************************************************************************/
-void MainWindow::beginTrip() {
-
-    // Create a new instance of the TripPlanner dialog
-    TripPlanner* tripPlanner = new TripPlanner(dbManager, this); // 'this' sets MainWindow as the parent of the dialog
-
-    // Display the TripPlanner dialog
-    tripPlanner->exec(); // Use exec() for a modal dialog
-    // or tripPlanner->show(); // Use show() for a non-modal window
-
-    // Optional: If you used 'new' without 'exec()', you might want to manage the deletion of tripPlanner to avoid memory leaks
-    // If 'exec()' is used, 'tripPlanner' can be safely deleted after 'exec()' because the dialog becomes blocking and remains open until closed by the user
-    delete tripPlanner; // Only necessary if 'show()' is used and you want to manage memory manually
-    // // Create a new trip
-    // TripPlanner* trip = new TripPlanner;
-
-    // createCorrectTripOrder(trip);
-
-    // trip->visitCampus();
+void MainWindow::openAdminWindow()
+{
+    if (adminWindow) // Check if the Admin window exists
+    {
+        adminWindow->show(); // If it does, show the Admin window
+    }
 }
 
-void MainWindow::createCorrectTripOrder(TripPlanner* trip) {
-    /* This will need to change once the trip stories have been finished.
-     * For now, I am hard coding to test functionality */
+void MainWindow::beginTrip()
+{
+    // Create a new instance of the TripPlanner dialog
+    TripPlanner* tripPlanner = new TripPlanner(dbManager, this);
+    // Display the TripPlanner dialog
+    tripPlanner->exec();
+    delete tripPlanner;
+}
+
+void MainWindow::createCorrectTripOrder(TripPlanner* trip)
+{
     trip->addCollege(dbManager->getCollegeVec()[0]);
     trip->addCollege(dbManager->getCollegeVec()[1]);
     trip->addCollege(dbManager->getCollegeVec()[2]);

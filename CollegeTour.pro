@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     CollegeListWindow.cpp \
     TripPlanner.cpp \
+    admin.cpp \
     adminDialog.cpp \
     college.cpp \
     customtrip.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
 HEADERS += \
     CollegeListWindow.h \
     TripPlanner.h \
+    admin.h \
     adminDialog.h \
     college.h \
     customtrip.h \
@@ -41,7 +43,8 @@ FORMS += \
     numofcollegestovisit.ui \
     showsouvenirswindow.ui \
     tripplanner.ui \
-    visitcollegewindow.ui
+    visitcollegewindow.ui \
+    admin.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -10,7 +10,7 @@
 using namespace std;
 
 // change to the path of the database
-static const QString path = "/Users/celesterock/Desktop/CollegeData.db";
+static const QString path = "C:/Users/donov/AppData/Local/MARCH/CollegeData.db";
 
 int main(int argc, char *argv[])
 {
