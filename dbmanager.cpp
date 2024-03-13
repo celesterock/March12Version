@@ -270,3 +270,29 @@ void DbManager::printAllColleges() const {
     }
     qDebug() << "after while loop\n\n";
 }
+
+College DbManager::findCollegeByName(QString name) {
+    for (const College& college : CollegeVec) {
+        if (college.getCollegeName().compare(name, Qt::CaseInsensitive) == 0) {
+            return college;  // Found a matching college, return it
+        }
+    }
+
+    // No matching college found, return a default College object or handle as needed
+    return College();
+}
+
+
+double DbManager::getDistanceToSaddleback(College collegeName) {
+    QString saddlebackName = "Saddleback College";
+
+    for (const DistanceData& data : DistanceVec) {
+        // Ensure that you compare QString to QString
+        if ((data.startCollege == collegeName.getCollegeName() && data.endCollege == saddlebackName) ||
+            (data.startCollege == saddlebackName && data.endCollege == collegeName.getCollegeName())) {
+            return data.distance;
+        }
+    }
+
+    return -1;
+}

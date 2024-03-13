@@ -1,9 +1,8 @@
 #ifndef ADMINDIALOG_H
 #define ADMINDIALOG_H
 
-#include "dbmanager.h"
 #include "qdialog.h"
-#include <vector>
+#include<vector>
 #include "QLabel.h"
 #include "QStackedWidget"
 #include "QVBoxLayout"
@@ -13,7 +12,7 @@
 #include "QMessageBox"
 #include "QComboBox"
 #include "college.h"
-
+#include "dbmanager.h"
 
 
 
@@ -27,17 +26,18 @@ public:
 private slots:
     void toOk();
     void toClear();
-    void toAdd(QString);
     void toModify();
     void toRemove();
     void toUpdate();
     void toExit();
+    void getNames();
+    void getName();
 
 private:
 
+    DbManager *manager;
     College college;
-    DbManager* manager;
-
+    QVector <College> Colleges;
     QStackedWidget* stackedWidget;
     QString realId = "Sprinters";
     QString realPassword = "12345";
@@ -45,6 +45,7 @@ private:
     QPushButton* ok;
     QPushButton* clear;
     QPushButton* addCollege;
+    QPushButton* custom;
     QPushButton* removeCollege;
     QPushButton* modifyCollege;
     QPushButton* update;
@@ -59,13 +60,14 @@ private:
     QAction* okAct;
     QAction* clearAct;
 
-    void getNames();
 
     void createButtons();
     void createActions();
     void createLoginScreen();
     void createMainPage();
-    void selectCollege();
+    void toAdd(QString);
+    void toCustom(const QString&);
+
 
 
 

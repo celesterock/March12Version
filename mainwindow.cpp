@@ -16,6 +16,13 @@ MainWindow::MainWindow(DbManager* dbManager, QWidget *parent):
     connect(ui->beginTrip, &QPushButton::clicked, this, &MainWindow::beginTrip);
 
 
+
+    connect(toLoginAct, &QAction::triggered, this, &MainWindow::toLogin);
+
+    connect(ui->openCollegeListButton, &QPushButton::clicked, this, &MainWindow::openCollegeListWindow);
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -26,7 +33,7 @@ MainWindow::~MainWindow()
 void MainWindow::createActions()
 {
     toLoginAct = new QAction("&Login",this);
-    connect(toLoginAct, &QAction::triggered, this, &MainWindow::toLogin);
+
     qDebug() << "hello";
 
 }
@@ -58,18 +65,11 @@ void MainWindow::beginTrip() {
     // Optional: If you used 'new' without 'exec()', you might want to manage the deletion of tripPlanner to avoid memory leaks
     // If 'exec()' is used, 'tripPlanner' can be safely deleted after 'exec()' because the dialog becomes blocking and remains open until closed by the user
     delete tripPlanner; // Only necessary if 'show()' is used and you want to manage memory manually
-    // // Create a new trip
-    // TripPlanner* trip = new TripPlanner;
-
-    // createCorrectTripOrder(trip);
-
-    // trip->visitCampus();
 }
 
-void MainWindow::createCorrectTripOrder(TripPlanner* trip) {
-    /* This will need to change once the trip stories have been finished.
-     * For now, I am hard coding to test functionality */
-    trip->addCollege(dbManager->getCollegeVec()[0]);
-    trip->addCollege(dbManager->getCollegeVec()[1]);
-    trip->addCollege(dbManager->getCollegeVec()[2]);
+void MainWindow::openCollegeListWindow() {
+    // Create the ShowCollegesWindow dialog
+    showcollegeswindow showCollegesDialog(dbManager, this);
+    showCollegesDialog.exec();
 }
+

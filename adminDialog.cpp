@@ -3,12 +3,14 @@
 
 adminDialog::adminDialog(DbManager* dbManager, QWidget* parent) : QDialog(parent), manager(dbManager)
 {
+
     stackedWidget = new QStackedWidget(this);
 
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(stackedWidget);
     setLayout(mainLayout);
 
+    createButtons();
     createLoginScreen();
 }
 adminDialog::~adminDialog()
@@ -24,18 +26,20 @@ void adminDialog::createActions()
     connect(removeCollege, &QPushButton::clicked, this, &adminDialog::toRemove);
     connect(update, &QPushButton::clicked, this, &adminDialog::toUpdate);
     connect(exit, &QPushButton::clicked, this, &adminDialog::toExit);
+    connect(custom, &QPushButton::clicked, this, &adminDialog::getName);
     //connect(addCollege, &QPushButton::clicked, this, &adminDialog::toAddCollege);
 }
 
 void adminDialog::createButtons()
 {
     update = new QPushButton("Update");
+    exit = new QPushButton("Exit");
 }
+
 void adminDialog::createLoginScreen()
 {
     ok = new QPushButton("Ok");
     clear = new QPushButton("Clear");
-
     userId = new QLabel("User ID: ");
     passwordEntry = new QLabel("Password: ");
 
@@ -63,11 +67,12 @@ void adminDialog::createMainPage()
 {
     /*auto it = find_if(colleges.begin(), colleges.end(),
                       [&_name_](const std::unique_ptr<Colleges>& obj) {return obj->getIdName() == _name_;});*/
-    qDebug() << "Create Main Page";
-    QStringList names;
     addCollege = new QPushButton("Add");
     removeCollege = new QPushButton("remove");
     modifyCollege = new QPushButton("Edit");
+    custom = new QPushButton("Custom");
+    qDebug() << "Create Main Page";
+    QStringList names;
     names << "College1" << "College2" << "College3";
     QComboBox* collegeNames = new QComboBox(this);
     collegeNames->addItems(names);
@@ -80,12 +85,14 @@ void adminDialog::createMainPage()
     mainPageLayout->addWidget(addCollege, 0, 1, Qt::AlignTop | Qt::AlignRight);
     mainPageLayout->addWidget(removeCollege, 0, 2, Qt::AlignTop | Qt::AlignRight);
     mainPageLayout->addWidget(modifyCollege, 0, 3, Qt::AlignTop | Qt::AlignRight);
+    mainPageLayout->addWidget(custom, 0, 4, Qt::AlignTop | Qt::AlignRight);
 
 
     QWidget* page2 = new QWidget;
     stackedWidget->addWidget(page2);
     page2->setLayout(mainPageLayout);
     stackedWidget->setCurrentIndex(1);
+    createActions();
 }
 
 void adminDialog::getNames()
@@ -115,8 +122,19 @@ void adminDialog::getNames()
         errorBox->exec();
 
     }
-}
 
+}
+void adminDialog::getName()
+{
+    bool ok;
+
+    QString chosen = QInputDialog::getText(this,"Select College ", "College: ", QLineEdit::Normal, "", &ok);
+    if (&ok && !chosen.isEmpty())
+    {
+        toCustom(chosen);
+    }
+
+}
 void adminDialog::toOk()
 {
     QMessageBox* errorMessage = new QMessageBox;
@@ -195,7 +213,7 @@ void adminDialog::toModify()
     QVector<Souvenir> souvenirs;
     for (const College& c : manager->getCollegeVec())
     {
-        // Colleges->append(c);
+        Colleges.append(c);
         souvenirs.append(c.getSouvenirOptions());
     }
 
@@ -219,7 +237,7 @@ void adminDialog::toModify()
         modifyLayout->addWidget(souvenirName);
         modifyLayout->addWidget(souvenirCost);
     }
-
+    createActions();
 
 }
 void adminDialog::toRemove()
@@ -235,7 +253,7 @@ void adminDialog::toRemove()
     QString chosen = QInputDialog::getItem(this,"Select College ", "College: ", names, 0, false, &ok);
     if (&ok && !chosen.isEmpty())
     {
-        toAdd(chosen);
+        // manager->deleteCollege(name);
     }
     else
     {
@@ -243,13 +261,49 @@ void adminDialog::toRemove()
         errorBox->exec();
 
     }
+    createActions();
 }
 void adminDialog::toUpdate()
 {
     // manager->addColleges(college.getCollegeName());
-    // manager->addSouvenirs(college);
+    manager->addSouvenirs(college);
 }
 void adminDialog::toExit()
 {
     stackedWidget->setCurrentIndex(1);
+}
+void adminDialog::toCustom(const QString& chosen)
+{
+    bool ok;
+    double dis;
+    bool allGood = true;
+
+    QStringList existingColleges;
+
+    for(const College& c : manager->getCollegeVec())
+    {
+        existingColleges.append(c.getCollegeName());
+    }
+    for (const QString& name : existingColleges)
+    {
+        QString input = QInputDialog::getText(this, "Enter Distance", "Distance from " + chosen + " to " + name + ":", QLineEdit::Normal, " ", &ok);
+
+        if (&ok && !input.isEmpty())
+        {
+            dis = input.toDouble();
+            // manager->addDistances(chosen, name, dis);
+        }
+        else
+        {
+            // manager->deleteDistances(chosen);
+            allGood = false;
+            break;
+        }
+    }
+
+    if (allGood)
+    {
+        toAdd(chosen);
+    }
+
 }

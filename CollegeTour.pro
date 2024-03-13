@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ../tripSummary.cpp \
     CollegeListWindow.cpp \
     TripPlanner.cpp \
     adminDialog.cpp \
@@ -18,11 +19,13 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     numofcollegestovisit.cpp \
+    showcollegeswindow.cpp \
     showsouvenirswindow.cpp \
     souvenir.cpp \
     visitcollegewindow.cpp
 
 HEADERS += \
+    ../tripSummary.h \
     CollegeListWindow.h \
     TripPlanner.h \
     adminDialog.h \
@@ -31,14 +34,17 @@ HEADERS += \
     dbmanager.h \
     mainwindow.h \
     numofcollegestovisit.h \
+    showcollegeswindow.h \
     showsouvenirswindow.h \
     souvenir.h \
     visitcollegewindow.h
 
 FORMS += \
+    ../tripSummary.ui \
     CollegeListWindow.ui \
     mainwindow.ui \
     numofcollegestovisit.ui \
+    showcollegeswindow.ui \
     showsouvenirswindow.ui \
     tripplanner.ui \
     visitcollegewindow.ui
