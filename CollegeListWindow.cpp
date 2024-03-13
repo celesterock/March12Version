@@ -69,3 +69,6 @@ College CollegeList::getStartingCollege() {
 }
 
 
+void CollegeList::viewCollegesAndSouvenirs() {
+
+}

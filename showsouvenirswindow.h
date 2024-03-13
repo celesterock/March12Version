@@ -1,26 +1,26 @@
-// #ifndef SHOWSOUVENIRSWINDOW_H
-// #define SHOWSOUVENIRSWINDOW_H
+#ifndef SHOWSOUVENIRSWINDOW_H
+#define SHOWSOUVENIRSWINDOW_H
 
-// #include <QDialog>
-// #include "dbmanager.h"
+#include <QDialog>
+#include "college.h"
 
-// namespace Ui {
-//     class ShowSouvenirsWindow;
-// }
+namespace Ui {
+    class ShowSouvenirsWindow;
+}
 
-// class ShowSouvenirsWindow : public QDialog
-// {
-//     Q_OBJECT
+class ShowSouvenirsWindow : public QDialog
+{
+    Q_OBJECT
 
-// public:
-//     explicit ShowSouvenirsWindow(DbManager *dbManager, QWidget *parent = nullptr);
-//     ~ShowSouvenirsWindow();
+public:
+    explicit ShowSouvenirsWindow(const College &college, QWidget *parent = nullptr);
+    ~ShowSouvenirsWindow();
 
-// private slots:
+private slots:
 
 
-// private:
-//     Ui::ShowSouvenirsWindow *ui;
-// };
+private:
+    Ui::ShowSouvenirsWindow *ui;
+};
 
-// #endif // SHOWSOUVENIRSWINDOW_H
+#endif // SHOWSOUVENIRSWINDOW_H
