@@ -6,23 +6,47 @@
 #include <QString>
 using namespace std;
 
-
+/**
+ * @brief The Souvenir class represents a souvenir item.
+ */
 class Souvenir {
 public:
-    /* CONSTRUCTOR AND DESTRUCTOR */
+    /**
+     * @brief Constructor for the Souvenir class.
+     * @param name The name of the souvenir.
+     * @param price The price of the souvenir.
+     */
     Souvenir(QString name, double price);
+
+    /**
+     * @brief Destructor for the Souvenir class.
+     */
     ~Souvenir();
 
-    // changes the price attribute to the value passed in
+    /**
+     * @brief Modifies the price of the souvenir.
+     * @param price The new price of the souvenir.
+     */
     void modifyPrice(double price);
 
-    // returns the name attribute
+    /**
+     * @brief Gets the name of the souvenir.
+     * @return The name of the souvenir.
+     */
     QString getName() const;
 
-    // returns the price attribute
+    /**
+     * @brief Gets the price of the souvenir.
+     * @return The price of the souvenir.
+     */
     double getPrice() const;
 
-    // overloaded insertion operator
+    /**
+     * @brief Overloaded insertion operator to output Souvenir information.
+     * @param out The output stream.
+     * @param sovenir The Souvenir object to output.
+     * @return The output stream.
+     */
     friend ostream& operator << (ostream& out, const Souvenir& sovenir);
 
 private:
